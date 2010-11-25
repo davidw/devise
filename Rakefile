@@ -37,11 +37,11 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     root_files = FileList["README.rdoc", "MIT-LICENSE", "CHANGELOG.rdoc"]
-    s.name = "devise"
+    s.name = "devise-translated"
     s.version = Devise::VERSION.dup
     s.summary = "Flexible authentication solution for Rails with Warden"
     s.email = "contact@plataformatec.com.br"
-    s.homepage = "http://github.com/plataformatec/devise"
+    s.homepage = "http://github.com/davidw/devise"
     s.description = "Flexible authentication solution for Rails with Warden"
     s.authors = ['José Valim', 'Carlos Antônio']
     s.files =  root_files + FileList["{app,config,lib}/**/*"]
