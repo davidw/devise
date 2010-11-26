@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio", "David N. Welton"]
-  s.date = %q{2010-11-24}
+  s.date = %q{2010-11-26}
   s.description = %q{Flexible authentication solution for Rails with Warden - with translated views}
   s.email = %q{davidw@dedasys.com}
   s.extra_rdoc_files = [
