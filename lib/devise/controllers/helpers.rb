@@ -202,11 +202,11 @@ module Devise
         scope    = Devise::Mapping.find_scope!(resource_or_scope)
         resource = args.last || resource_or_scope
         sign_in(scope, resource, options)
-        redirect_for_sign_in(scope, resource)
+        redirect_to redirect_location(scope, resource)
       end
 
-      def redirect_for_sign_in(scope, resource) #:nodoc:
-        redirect_to stored_location_for(scope) || after_sign_in_path_for(resource)
+      def redirect_location(scope, resource) #:nodoc:
+        stored_location_for(scope) || after_sign_in_path_for(resource)
       end
 
       # Sign out an user and tries to redirect to the url specified by
@@ -214,10 +214,6 @@ module Devise
       def sign_out_and_redirect(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)
         Devise.sign_out_all_scopes ? sign_out : sign_out(scope)
-        redirect_for_sign_out(scope)
-      end
-
-      def redirect_for_sign_out(scope) #:nodoc:
         redirect_to after_sign_out_path_for(scope)
       end
 
