@@ -3,6 +3,12 @@ module Devise
 
     # Recoverable takes care of reseting the user password and send reset instructions.
     #
+    # ==Options
+    #
+    # Recoverable adds the following options to devise_for:
+    #
+    #   * +reset_password_keys+: the keys you want to use when recovering the password for an account
+    #
     # == Examples
     #
     #   # resets the user password and save the record, true if valid passwords are given, otherwise false
@@ -57,7 +63,7 @@ module Devise
         # with an email not found error.
         # Attributes must contain the user email
         def send_reset_password_instructions(attributes={})
-          recoverable = find_or_initialize_with_errors(authentication_keys, attributes, :not_found)
+          recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
           recoverable.send_reset_password_instructions if recoverable.persisted?
           recoverable
         end
@@ -77,6 +83,8 @@ module Devise
           recoverable.reset_password!(attributes[:password], attributes[:password_confirmation]) if recoverable.persisted?
           recoverable
         end
+
+        Devise::Models.config(self, :reset_password_keys)
       end
     end
   end
