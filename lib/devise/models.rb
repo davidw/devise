@@ -2,7 +2,7 @@ module Devise
   module Models
     # Creates configuration values for Devise and for the given module.
     #
-    #   Devise::Models.config(Devise::Authenticable, :stretches, 10)
+    #   Devise::Models.config(Devise::Authenticatable, :stretches, 10)
     #
     # The line above creates:
     #
@@ -47,7 +47,9 @@ module Devise
     def devise(*modules)
       include Devise::Models::Authenticatable
       options = modules.extract_options!
-      self.devise_modules += Devise::ALL & modules.map(&:to_sym).uniq
+      self.devise_modules += modules.map(&:to_sym).uniq.sort_by { |s|
+        Devise::ALL.index(s) || -1  # follow Devise::ALL order
+      }
 
       devise_modules_hook! do
         devise_modules.each { |m| include Devise::Models.const_get(m.to_s.classify) }
