@@ -47,6 +47,13 @@ class ActiveRecordTest < ActiveSupport::TestCase
     assert_equal module_constants, (Admin.included_modules & module_constants).reverse
   end
 
+  test 'raise error on invalid module' do
+    assert_raise NameError do
+      # Mix valid an invalid modules.
+      Configurable.class_eval { devise :database_authenticatable, :doesnotexit }
+    end
+  end
+
   test 'set a default value for stretches' do
     assert_equal 15, Configurable.stretches
   end
