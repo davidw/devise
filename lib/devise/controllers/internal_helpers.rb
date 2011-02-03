@@ -16,16 +16,12 @@ module Devise
         helper_method *helpers
 
         prepend_before_filter :is_devise_resource?
-        respond_to :all if mimes_for_respond_to.empty?
-
-        Devise.routes_prepare do
-          skip_before_filter *Devise.mappings.keys.map { |m| :"authenticate_#{m}!" }
-        end
+        respond_to *Mime::SET.map(&:to_sym) if mimes_for_respond_to.empty?
       end
 
       # Gets the actual resource stored in the instance variable
       def resource
-        instance_variable_get("@#{resource_name}")
+        instance_variable_get(:"@#{resource_name}")
       end
 
       # Proxy to devise map name
