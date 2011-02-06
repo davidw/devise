@@ -51,7 +51,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_equal "was already confirmed, please try signing in", user.errors[:email].join
   end
 
-  test 'should find and confirm an user automatically' do
+  test 'should find and confirm a user automatically' do
     user = create_user
     confirmed_user = User.confirm_by_token(user.confirmation_token)
     assert_equal confirmed_user, user
@@ -217,5 +217,22 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.confirmation_sent_at = nil
     user.save
     assert user.reload.active?
+  end
+  
+  test 'should find a user to send email instructions for the user confirm it\'s email by authentication_keys' do
+    swap Devise, :authentication_keys => [:username, :email] do
+      user = create_user
+      confirm_user = User.send_confirmation_instructions(:email => user.email, :username => user.username)
+      assert_equal confirm_user, user
+    end
+  end
+  
+  test 'should require all confirmation_keys' do
+      swap Devise, :confirmation_keys => [:username, :email] do
+          user = create_user
+          confirm_user = User.send_confirmation_instructions(:email => user.email)
+          assert_not confirm_user.persisted?
+          assert_equal "can't be blank", confirm_user.errors[:username].join
+      end
   end
 end

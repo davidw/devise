@@ -9,7 +9,7 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 
 It's composed of 12 modules:
 
-* Database Authenticatable: encrypts and stores a password in the database to validate the authenticity of an user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
+* Database Authenticatable: encrypts and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
 * Token Authenticatable: signs in a user based on an authentication token (also known as "single access token"). The token can be given both through query string or HTTP Basic Authentication.
 * Omniauthable: adds Omniauth (github.com/intridea/omniauth) support;
 * Confirmable: sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
@@ -218,7 +218,7 @@ Devise currently supports generating views for the following template engines (u
 * Haml (http://github.com/nex3/haml)
 * Slim (http://github.com/stonean/slim)
 
-Note: If you are generating Haml or Slim templates, you will need to have a few dependencies such as `hpricot` (for both Haml and Slim) and `haml2slim` (for Slim) installed.
+Note: If you are generating Haml or Slim templates, you will need to have a few dependencies such as `ruby_parser` (for Haml), `hpricot` (for both Haml and Slim) and `haml2slim` (for Slim) installed.
 
 If you have more than one role in your application (such as "User" and "Admin"), you will notice that Devise uses the same views for all roles. Fortunately, Devise offers an easy way to customize views. All you need to do is set "config.scoped_views = true" inside "config/initializers/devise.rb".
 
