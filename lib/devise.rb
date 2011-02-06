@@ -116,6 +116,10 @@ module Devise
   # Time interval you can access your account before confirming your account.
   mattr_accessor :confirm_within
   @@confirm_within = 0.days
+  
+  # Defines which key will be used when confirming an account
+  mattr_accessor :confirmation_keys
+  @@confirmation_keys = [ :email ]
 
   # Time interval to timeout the user session without activity.
   mattr_accessor :timeout_in
@@ -185,7 +189,7 @@ module Devise
   mattr_accessor :navigational_formats
   @@navigational_formats = [:"*/*", :html]
 
-  # When set to true, signing out an user signs out all other scopes.
+  # When set to true, signing out a user signs out all other scopes.
   mattr_accessor :sign_out_all_scopes
   @@sign_out_all_scopes = true
 
