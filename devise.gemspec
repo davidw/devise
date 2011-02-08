@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "devise/version"
 
 Gem::Specification.new do |s|
-  s.name        = "devise"
+  s.name        = "devise-omniauth-complete"
   s.version     = Devise::VERSION.dup
   s.platform    = Gem::Platform::RUBY  
   s.summary     = "Flexible authentication solution for Rails with Warden"
