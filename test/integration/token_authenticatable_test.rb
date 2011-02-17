@@ -76,15 +76,26 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
     end
   end
 
+  test 'authenticate with valid authentication token key and do not store if stateless and timeoutable are enabled' do
+    swap Devise, :token_authentication_key => :secret_token, :stateless_token => true, :timeout_in => (0.1).second do
+      user = sign_in_as_new_user_with_token
+      assert warden.authenticated?(:user)
+
+      # Expiring does not work because we are setting the session value when accessing it
+      sleep 0.3
+
+      get_users_path_as_existing_user(user)
+      assert warden.authenticated?(:user)
+    end
+  end
+
   private
 
     def sign_in_as_new_user_with_token(options = {})
-      options[:auth_token_key] ||= Devise.token_authentication_key
-      options[:auth_token]     ||= VALID_AUTHENTICATION_TOKEN
+      user = options.delete(:user) || create_user_with_authentication_token(options)
 
-      user = create_user(options)
-      user.authentication_token = VALID_AUTHENTICATION_TOKEN
-      user.save
+      options[:auth_token_key] ||= Devise.token_authentication_key
+      options[:auth_token]     ||= user.authentication_token
 
       if options[:http_auth]
         header = "Basic #{ActiveSupport::Base64.encode64("#{VALID_AUTHENTICATION_TOKEN}:X")}"
@@ -96,4 +107,14 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
       user
     end
 
+    def create_user_with_authentication_token(options)
+      user = create_user(options)
+      user.authentication_token = VALID_AUTHENTICATION_TOKEN
+      user.save
+      user
+    end
+
+    def get_users_path_as_existing_user(user)
+      sign_in_as_new_user_with_token(:user => user)
+    end
 end

@@ -1,3 +1,4 @@
+require 'rails'
 require 'active_support/core_ext/numeric/time'
 require 'active_support/dependencies'
 require 'orm_adapter'
@@ -186,8 +187,9 @@ module Devise
   @@stateless_token = false
 
   # Which formats should be treated as navigational.
+  # We need both :"*/*" and "*/*" to work on different Rails versions.
   mattr_accessor :navigational_formats
-  @@navigational_formats = [:"*/*", :html]
+  @@navigational_formats = [:"*/*", "*/*", :html]
 
   # When set to true, signing out a user signs out all other scopes.
   mattr_accessor :sign_out_all_scopes
@@ -370,7 +372,18 @@ module Devise
 
   # Generate a friendly string randomically to be used as token.
   def self.friendly_token
-    ActiveSupport::SecureRandom.base64(44).tr('+/=', 'xyz')
+    ActiveSupport::SecureRandom.base64(15).tr('+/=', 'xyz')
+  end
+
+  # constant-time comparison algorithm to prevent timing attacks
+  def self.secure_compare(a, b)
+    return false unless a.present? && b.present?
+    return false unless a.bytesize == b.bytesize
+    l = a.unpack "C#{a.bytesize}"
+
+    res = 0
+    b.each_byte { |byte| res |= byte ^ l.shift }
+    res == 0
   end
 end
 
